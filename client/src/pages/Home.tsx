@@ -92,7 +92,7 @@ export default function Home() {
                   className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300"
                   asChild
                 >
-                  <a href="#que-son">Descubre cómo funcionan</a>
+                  <a href="/blog">Aprende en el Blog</a>
                 </Button>
                 <Button 
                   size="lg" 
@@ -215,10 +215,18 @@ export default function Home() {
               <span className="text-sm font-medium text-accent-foreground">Beneficios</span>
             </div>
             <h2 className="text-foreground mb-6">¿Por qué invertir en Fibras?</h2>
-            <p className="text-xl text-foreground/70">
+            <p className="text-xl text-foreground/70 mb-4">
               Las Fibras ofrecen múltiples ventajas que las convierten en una opción atractiva para 
               diversificar tu portafolio de inversión.
             </p>
+            <Button
+              variant="outline"
+              className="border-2 border-accent text-accent hover:bg-accent/10 transition-all"
+              asChild
+            >
+              <a href="/blog">Leer artículos educativos</a>
+            </Button>
+
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
