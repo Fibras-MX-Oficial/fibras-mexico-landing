@@ -560,7 +560,8 @@ export default function Blog() {
           </div>
           <div className="hidden md:flex items-center gap-8">
             <a href="/" className="text-foreground/80 hover:text-primary transition-colors duration-300">Inicio</a>
-            <a href="/#blog" className="text-foreground/80 hover:text-primary transition-colors duration-300">Blog</a>
+            <a href="/blog" className="text-foreground/80 hover:text-primary transition-colors duration-300">Blog</a>
+            <a href="/comparativa" className="text-foreground/80 hover:text-primary transition-colors duration-300">Comparativa</a>
           </div>
           <Button 
             className="bg-primary text-primary-foreground hover:bg-primary/90"

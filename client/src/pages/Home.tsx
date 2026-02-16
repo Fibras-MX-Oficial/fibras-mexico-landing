@@ -42,6 +42,8 @@ export default function Home() {
             <a href="#que-son" className="text-foreground/80 hover:text-primary transition-colors duration-300">¿Qué son?</a>
             <a href="#ventajas" className="text-foreground/80 hover:text-primary transition-colors duration-300">Ventajas</a>
             <a href="#tipos" className="text-foreground/80 hover:text-primary transition-colors duration-300">Tipos</a>
+            <a href="/blog" className="text-foreground/80 hover:text-primary transition-colors duration-300">Blog</a>
+            <a href="/comparativa" className="text-foreground/80 hover:text-primary transition-colors duration-300">Comparativa</a>
             <a href="#comunidad" className="text-foreground/80 hover:text-primary transition-colors duration-300">Comunidad</a>
           </div>
           <Button 
