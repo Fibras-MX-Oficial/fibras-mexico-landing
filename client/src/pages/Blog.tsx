@@ -562,6 +562,7 @@ export default function Blog() {
             <a href="/" className="text-foreground/80 hover:text-primary transition-colors duration-300">Inicio</a>
             <a href="/blog" className="text-foreground/80 hover:text-primary transition-colors duration-300">Blog</a>
             <a href="/comparativa" className="text-foreground/80 hover:text-primary transition-colors duration-300">Comparativa</a>
+            <a href="/noticias" className="text-foreground/80 hover:text-primary transition-colors duration-300">Noticias</a>
           </div>
           <Button 
             className="bg-primary text-primary-foreground hover:bg-primary/90"
