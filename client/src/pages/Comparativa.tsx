@@ -2,6 +2,7 @@
  * Design Philosophy: Fintech Institutional Pro
  * - Tabla terminal financiera moderna con glassmorphism
  * - Heatmap de Market Cap vs Dividend Yield
+ * - Filtros avanzados, búsqueda y exportación CSV
  * - Datos exclusivos de Fibras autorizadas por AMEFIBRA
  */
 
@@ -14,7 +15,11 @@ import {
   AlertCircle,
   CheckCircle,
   Filter,
-  Zap
+  Zap,
+  Download,
+  Search,
+  ArrowUpDown,
+  X
 } from "lucide-react";
 import { useState, useMemo } from "react";
 
@@ -31,7 +36,7 @@ interface FibraData {
   pNAV: number;
   propiedades: number;
   estado: "saludable" | "moderado" | "riesgo";
-  marketCap: number; // en millones de USD
+  marketCap: number;
 }
 
 // Datos exclusivos de Fibras autorizadas por AMEFIBRA
@@ -235,23 +240,162 @@ const fibrasData: FibraData[] = [
 
 const sectores = ["Todos", "Industrial", "Comercial", "Oficinas", "Hotelero", "Educativo", "Residencial", "Diversificado"];
 
+type SortKey = "yield" | "ocupacion" | "deuda" | "marketCap" | "pNav" | "crecimiento" | "precio" | "nombre";
+type SortOrder = "asc" | "desc";
+
+// Componente para header de tabla con ordenamiento
+function SortableHeader({ 
+  label, 
+  sortKey: key, 
+  currentSort, 
+  currentOrder,
+  onSort 
+}: { 
+  label: string; 
+  sortKey: SortKey; 
+  currentSort: SortKey; 
+  currentOrder: SortOrder;
+  onSort: (key: SortKey) => void;
+}) {
+  const isActive = currentSort === key;
+  return (
+    <button
+      onClick={() => onSort(key)}
+      className="flex items-center gap-1 hover:text-accent transition-colors cursor-pointer group"
+    >
+      <span className="font-semibold text-foreground">{label}</span>
+      <ArrowUpDown 
+        className={`w-4 h-4 transition-all ${
+          isActive 
+            ? 'text-accent' 
+            : 'text-foreground/30 group-hover:text-foreground/60'
+        } ${isActive && currentOrder === 'asc' ? 'rotate-180' : ''}`}
+      />
+    </button>
+  );
+}
+
 export default function Comparativa() {
   const [filtroSector, setFiltroSector] = useState("Todos");
-  const [ordenarPor, setOrdenarPor] = useState<"yield" | "ocupacion" | "deuda">("yield");
+  const [busqueda, setBusqueda] = useState("");
+  const [sortKey, setSortKey] = useState<SortKey>("yield");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
+
+  const handleSort = (key: SortKey) => {
+    if (sortKey === key) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortKey(key);
+      setSortOrder("desc");
+    }
+  };
+
+  // Función para exportar a CSV
+  const exportToCSV = () => {
+    const headers = ["Nombre", "Ticker", "Sector", "Yield (%)", "Ocupación (%)", "Deuda/EBITDA", "P/NAV", "Market Cap (M)", "Precio", "Crecimiento Dividendos (%)"];
+    const rows = fibrasFiltradas.map(f => [
+      f.nombre,
+      f.ticker,
+      f.sector,
+      f.yieldAnual.toFixed(2),
+      f.ocupacion.toFixed(2),
+      f.deudaEBITDA.toFixed(2),
+      f.pNAV.toFixed(2),
+      f.marketCap,
+      f.precioActual.toFixed(2),
+      f.crecimientoDividendos.toFixed(2)
+    ]);
+
+    const csv = [
+      headers.join(","),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(","))
+    ].join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `fibras-comparativa-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const fibrasFiltradas = useMemo(() => {
     let filtered = fibrasData;
     
+    // Filtrar por sector
     if (filtroSector !== "Todos") {
       filtered = filtered.filter(f => f.sector === filtroSector);
     }
 
+    // Filtrar por búsqueda (nombre o ticker)
+    if (busqueda.trim()) {
+      const searchLower = busqueda.toLowerCase();
+      filtered = filtered.filter(f => 
+        f.nombre.toLowerCase().includes(searchLower) || 
+        f.ticker.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Ordenamiento multi-criterio
     return filtered.sort((a, b) => {
-      if (ordenarPor === "yield") return b.yieldAnual - a.yieldAnual;
-      if (ordenarPor === "ocupacion") return b.ocupacion - a.ocupacion;
-      return a.deudaEBITDA - b.deudaEBITDA;
+      let aVal: number | string = 0;
+      let bVal: number | string = 0;
+
+      switch (sortKey) {
+        case "yield":
+          aVal = a.yieldAnual;
+          bVal = b.yieldAnual;
+          break;
+        case "ocupacion":
+          aVal = a.ocupacion;
+          bVal = b.ocupacion;
+          break;
+        case "deuda":
+          aVal = a.deudaEBITDA;
+          bVal = b.deudaEBITDA;
+          break;
+        case "marketCap":
+          aVal = a.marketCap;
+          bVal = b.marketCap;
+          break;
+        case "pNav":
+          aVal = a.pNAV;
+          bVal = b.pNAV;
+          break;
+        case "crecimiento":
+          aVal = a.crecimientoDividendos;
+          bVal = b.crecimientoDividendos;
+          break;
+        case "precio":
+          aVal = a.precioActual;
+          bVal = b.precioActual;
+          break;
+        case "nombre":
+          aVal = a.nombre;
+          bVal = b.nombre;
+          break;
+        default:
+          return 0;
+      }
+
+      if (typeof aVal === "string" && typeof bVal === "string") {
+        if (sortOrder === "asc") {
+          return aVal.localeCompare(bVal);
+        } else {
+          return bVal.localeCompare(aVal);
+        }
+      }
+
+      if (sortOrder === "asc") {
+        return (aVal as number) - (bVal as number);
+      } else {
+        return (bVal as number) - (aVal as number);
+      }
     });
-  }, [filtroSector, ordenarPor]);
+  }, [filtroSector, busqueda, sortKey, sortOrder]);
 
   // Calcular rango de Market Cap y Yield para el heatmap
   const marketCapMin = Math.min(...fibrasData.map(f => f.marketCap));
@@ -262,15 +406,15 @@ export default function Comparativa() {
   // Función para obtener color basado en yield
   const getYieldColor = (yield_: number) => {
     const normalized = (yield_ - yieldMin) / (yieldMax - yieldMin);
-    if (normalized > 0.7) return "oklch(0.65 0.25 200)"; // Verde cian intenso
-    if (normalized > 0.4) return "oklch(0.55 0.15 210)"; // Cian moderado
-    return "oklch(0.35 0.08 260)"; // Azul oscuro
+    if (normalized > 0.7) return "oklch(0.65 0.25 200)";
+    if (normalized > 0.4) return "oklch(0.55 0.15 210)";
+    return "oklch(0.35 0.08 260)";
   };
 
   // Función para obtener tamaño basado en market cap
   const getSize = (marketCap: number) => {
     const normalized = (marketCap - marketCapMin) / (marketCapMax - marketCapMin);
-    return 80 + normalized * 120; // 80px a 200px
+    return 80 + normalized * 120;
   };
 
   return (
@@ -309,75 +453,96 @@ export default function Comparativa() {
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h1 className="text-foreground">Comparativa de Fibras AMEFIBRA</h1>
             <p className="text-xl text-foreground/70">
-              Análisis completo de las Fibras autorizadas. Datos actualizados de Market Cap, Rendimiento y Ocupación.
+              Análisis completo con búsqueda avanzada, filtros y exportación de datos
             </p>
           </div>
         </div>
       </section>
 
-      {/* Sección de Filtros */}
+      {/* Sección de Filtros Avanzados */}
       <section className="py-8 glassmorphism border-b border-border sticky top-20 z-40">
         <div className="container">
-          <div className="grid md:grid-cols-3 gap-6">
-            {/* Filtro de Sector */}
+          <div className="space-y-6">
+            {/* Búsqueda */}
             <div className="space-y-3">
               <label className="text-sm font-semibold text-foreground flex items-center gap-2">
-                <Filter className="w-4 h-4 text-accent" />
-                Filtrar por Sector
+                <Search className="w-4 h-4 text-accent" />
+                Buscar por Nombre o Ticker
               </label>
-              <div className="flex flex-wrap gap-2">
-                {sectores.map(sector => (
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Ej: FUNO, Fibra Uno, Industrial..."
+                  value={busqueda}
+                  onChange={(e) => setBusqueda(e.target.value)}
+                  className="w-full px-4 py-2 rounded-lg bg-secondary/30 border border-secondary/50 text-foreground placeholder:text-foreground/40 focus:outline-none focus:border-accent transition-colors"
+                />
+                {busqueda && (
                   <button
-                    key={sector}
-                    onClick={() => setFiltroSector(sector)}
-                  className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
-                    filtroSector === sector
-                      ? "bg-accent text-primary shadow-lg hover:shadow-xl"
-                      : "bg-secondary/30 text-foreground/70 hover:bg-secondary/50 border border-secondary/50"
-                  }`}
+                    onClick={() => setBusqueda("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/60 hover:text-accent transition-colors"
                   >
-                    {sector}
+                    <X className="w-4 h-4" />
                   </button>
-                ))}
+                )}
               </div>
             </div>
 
-            {/* Ordenar por */}
-            <div className="space-y-3">
-              <label className="text-sm font-semibold text-foreground flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-accent" />
-                Ordenar por
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { label: "Mayor Yield", value: "yield" },
-                  { label: "Mayor Ocupación", value: "ocupacion" },
-                  { label: "Menor Deuda", value: "deuda" }
-                ].map(option => (
-                  <button
-                    key={option.value}
-                    onClick={() => setOrdenarPor(option.value as any)}
-                  className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
-                    ordenarPor === option.value
-                      ? "bg-accent text-primary shadow-lg hover:shadow-xl"
-                      : "bg-secondary/30 text-foreground/70 hover:bg-secondary/50 border border-secondary/50"
-                  }`}
-                  >
-                    {option.label}
-                  </button>
-                ))}
+            {/* Filtro de Sector y Exportar */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  <Filter className="w-4 h-4 text-accent" />
+                  Filtrar por Sector
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {sectores.map(sector => (
+                    <button
+                      key={sector}
+                      onClick={() => setFiltroSector(sector)}
+                      className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                        filtroSector === sector
+                          ? "bg-accent text-primary shadow-lg hover:shadow-xl"
+                          : "bg-secondary/30 text-foreground/70 hover:bg-secondary/50 border border-secondary/50"
+                      }`}
+                    >
+                      {sector}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  <Download className="w-4 h-4 text-accent" />
+                  Exportar Datos
+                </label>
+                <Button
+                  onClick={exportToCSV}
+                  className="w-full bg-accent text-primary hover:bg-accent/90 font-semibold flex items-center justify-center gap-2"
+                >
+                  <Download className="w-4 h-4" />
+                  Descargar CSV ({fibrasFiltradas.length})
+                </Button>
               </div>
             </div>
 
-            {/* Info */}
-            <div className="space-y-3">
-              <label className="text-sm font-semibold text-foreground flex items-center gap-2">
-                <Zap className="w-4 h-4 text-accent" />
-                Resultados
-              </label>
-              <div className="px-4 py-2 rounded-lg bg-accent/10 border border-accent/30 text-foreground font-semibold">
-                {fibrasFiltradas.length} Fibra{fibrasFiltradas.length !== 1 ? 's' : ''}
-              </div>
+            {/* Info de resultados */}
+            <div className="flex items-center justify-between text-sm">
+              <p className="text-foreground/70">
+                Mostrando <span className="font-semibold text-accent">{fibrasFiltradas.length}</span> de <span className="font-semibold text-accent">{fibrasData.length}</span> Fibras
+              </p>
+              {(busqueda || filtroSector !== "Todos") && (
+                <button
+                  onClick={() => {
+                    setBusqueda("");
+                    setFiltroSector("Todos");
+                  }}
+                  className="text-foreground/70 hover:text-accent transition-colors"
+                >
+                  Limpiar filtros
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -395,7 +560,7 @@ export default function Comparativa() {
             {/* Heatmap Grid */}
             <div className="bg-card/50 border border-border/50 glassmorphism rounded-xl p-12">
               <div className="flex flex-wrap gap-6 justify-center items-center">
-                {fibrasData.map((fibra) => {
+                {fibrasFiltradas.map((fibra) => {
                   const size = getSize(fibra.marketCap);
                   const color = getYieldColor(fibra.yieldAnual);
                   
@@ -423,43 +588,6 @@ export default function Comparativa() {
                   );
                 })}
               </div>
-
-              {/* Leyenda del Heatmap */}
-              <div className="mt-12 pt-8 border-t border-border/50 space-y-4">
-                <p className="text-sm font-semibold text-foreground">Escala de Rendimiento:</p>
-                <div className="flex items-center gap-8">
-                  <div className="flex items-center gap-3">
-                    <div 
-                      className="w-12 h-12 rounded-lg border border-accent/30"
-                      style={{ backgroundColor: "oklch(0.65 0.25 200)" }}
-                    />
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">Alto Rendimiento</p>
-                      <p className="text-xs text-foreground/70">{yieldMax.toFixed(1)}% - {(yieldMax - (yieldMax - yieldMin) * 0.3).toFixed(1)}%</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div 
-                      className="w-12 h-12 rounded-lg border border-accent/30"
-                      style={{ backgroundColor: "oklch(0.55 0.15 210)" }}
-                    />
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">Rendimiento Moderado</p>
-                      <p className="text-xs text-foreground/70">{(yieldMax - (yieldMax - yieldMin) * 0.3).toFixed(1)}% - {(yieldMin + (yieldMax - yieldMin) * 0.4).toFixed(1)}%</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div 
-                      className="w-12 h-12 rounded-lg border border-accent/30"
-                      style={{ backgroundColor: "oklch(0.35 0.08 260)" }}
-                    />
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">Rendimiento Bajo</p>
-                      <p className="text-xs text-foreground/70">{yieldMin.toFixed(1)}% - {(yieldMin + (yieldMax - yieldMin) * 0.4).toFixed(1)}%</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -472,13 +600,69 @@ export default function Comparativa() {
             <table className="w-full">
               <thead>
                 <tr className="border-b-2 border-accent/30">
-                  <th className="text-left py-4 px-4 font-display font-semibold text-foreground">Fibra</th>
-                  <th className="text-right py-4 px-4 font-display font-semibold text-foreground">Sector</th>
-                  <th className="text-right py-4 px-4 font-display font-semibold text-foreground">Yield</th>
-                  <th className="text-right py-4 px-4 font-display font-semibold text-foreground">Ocupación</th>
-                  <th className="text-right py-4 px-4 font-display font-semibold text-foreground">Deuda/EBITDA</th>
-                  <th className="text-right py-4 px-4 font-display font-semibold text-foreground">P/NAV</th>
-                  <th className="text-right py-4 px-4 font-display font-semibold text-foreground">Market Cap</th>
+                  <th className="text-left py-4 px-4">
+                    <SortableHeader 
+                      label="Fibra" 
+                      sortKey="nombre" 
+                      currentSort={sortKey} 
+                      currentOrder={sortOrder}
+                      onSort={handleSort}
+                    />
+                  </th>
+                  <th className="text-right py-4 px-4">
+                    <SortableHeader 
+                      label="Sector" 
+                      sortKey="nombre" 
+                      currentSort={sortKey} 
+                      currentOrder={sortOrder}
+                      onSort={handleSort}
+                    />
+                  </th>
+                  <th className="text-right py-4 px-4">
+                    <SortableHeader 
+                      label="Yield" 
+                      sortKey="yield" 
+                      currentSort={sortKey} 
+                      currentOrder={sortOrder}
+                      onSort={handleSort}
+                    />
+                  </th>
+                  <th className="text-right py-4 px-4">
+                    <SortableHeader 
+                      label="Ocupación" 
+                      sortKey="ocupacion" 
+                      currentSort={sortKey} 
+                      currentOrder={sortOrder}
+                      onSort={handleSort}
+                    />
+                  </th>
+                  <th className="text-right py-4 px-4">
+                    <SortableHeader 
+                      label="Deuda" 
+                      sortKey="deuda" 
+                      currentSort={sortKey} 
+                      currentOrder={sortOrder}
+                      onSort={handleSort}
+                    />
+                  </th>
+                  <th className="text-right py-4 px-4">
+                    <SortableHeader 
+                      label="P/NAV" 
+                      sortKey="pNav" 
+                      currentSort={sortKey} 
+                      currentOrder={sortOrder}
+                      onSort={handleSort}
+                    />
+                  </th>
+                  <th className="text-right py-4 px-4">
+                    <SortableHeader 
+                      label="Market Cap" 
+                      sortKey="marketCap" 
+                      currentSort={sortKey} 
+                      currentOrder={sortOrder}
+                      onSort={handleSort}
+                    />
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -538,118 +722,20 @@ export default function Comparativa() {
             </table>
           </div>
 
-          {/* Leyenda de indicadores */}
-          <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="bg-card/50 border border-border/50 glassmorphism shadow-lg hover:shadow-xl transition-all duration-300">
-              <CardContent className="p-6 space-y-3">
-                <h4 className="font-display font-semibold text-foreground">Yield Anual</h4>
-                <p className="text-sm text-foreground/70">
-                  Porcentaje de rendimiento anual esperado. Mayor yield = mayor ingreso por dividendos.
-                </p>
-                <div className="pt-2 border-t border-border">
-                  <p className="text-xs text-foreground/60">Rango: {yieldMin.toFixed(1)}% - {yieldMax.toFixed(1)}%</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border border-border/50 glassmorphism shadow-lg hover:shadow-xl transition-all duration-300">
-              <CardContent className="p-6 space-y-3">
-                <h4 className="font-display font-semibold text-foreground">Ocupación</h4>
-                <p className="text-sm text-foreground/70">
-                  Porcentaje de propiedades rentadas. Mayor ocupación = ingresos más estables.
-                </p>
-                <div className="pt-2 border-t border-border">
-                  <p className="text-xs text-foreground/60">Ideal: 90%+</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border border-border/50 glassmorphism shadow-lg hover:shadow-xl transition-all duration-300">
-              <CardContent className="p-6 space-y-3">
-                <h4 className="font-display font-semibold text-foreground">Deuda/EBITDA</h4>
-                <p className="text-sm text-foreground/70">
-                  Nivel de endeudamiento. Menor ratio = menor riesgo financiero.
-                </p>
-                <div className="pt-2 border-t border-border">
-                  <p className="text-xs text-foreground/60">Saludable: &lt;3.0x</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border border-border/50 glassmorphism shadow-lg hover:shadow-xl transition-all duration-300">
-              <CardContent className="p-6 space-y-3">
-                <h4 className="font-display font-semibold text-foreground">P/NAV</h4>
-                <p className="text-sm text-foreground/70">
-                  Precio vs Valor de Activos. Menor a 1 = subvaluado.
-                </p>
-                <div className="pt-2 border-t border-border">
-                  <p className="text-xs text-foreground/60">Oportunidad: &lt;1.0</p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Sección de Recomendaciones */}
-      <section className="py-16" style={{
-        background: 'linear-gradient(135deg, rgba(102, 204, 255, 0.05) 0%, rgba(37, 99, 235, 0.05) 100%)'
-      }}>
-        <div className="container">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-foreground mb-8 text-center">Cómo Usar Esta Comparativa</h2>
-            
-            <div className="grid md:grid-cols-3 gap-8">
-              <Card className="bg-card/50 border border-border/50 glassmorphism shadow-lg hover:shadow-xl transition-all duration-300">
-                <CardContent className="p-8 space-y-4">
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-accent/30 to-accent/10 flex items-center justify-center">
-                    <span className="text-xl font-display font-bold text-accent">1</span>
-                  </div>
-                  <h3 className="text-lg font-display font-semibold text-foreground">Filtra por Sector</h3>
-                  <p className="text-foreground/70">
-                    Comienza filtrando por el sector que te interesa: Industrial, Comercial, Oficinas, Hotelero, Educativo o Residencial.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-card/50 border border-border/50 glassmorphism shadow-lg hover:shadow-xl transition-all duration-300">
-                <CardContent className="p-8 space-y-4">
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-accent/30 to-accent/10 flex items-center justify-center">
-                    <span className="text-xl font-display font-bold text-accent">2</span>
-                  </div>
-                  <h3 className="text-lg font-display font-semibold text-foreground">Analiza el Heatmap</h3>
-                  <p className="text-foreground/70">
-                    Visualiza el tamaño (Market Cap) y color (Rendimiento) de cada Fibra para identificar oportunidades.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-card/50 border border-border/50 glassmorphism shadow-lg hover:shadow-xl transition-all duration-300">
-                <CardContent className="p-8 space-y-4">
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-accent/30 to-accent/10 flex items-center justify-center">
-                    <span className="text-xl font-display font-bold text-accent">3</span>
-                  </div>
-                  <h3 className="text-lg font-display font-semibold text-foreground">Diversifica</h3>
-                  <p className="text-foreground/70">
-                    No inviertas todo en una sola Fibra. Combina varias para reducir riesgo y maximizar retornos.
-                  </p>
-                </CardContent>
-              </Card>
+          {fibrasFiltradas.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-foreground/70 text-lg">No se encontraron Fibras que coincidan con los filtros</p>
+              <button
+                onClick={() => {
+                  setBusqueda("");
+                  setFiltroSector("Todos");
+                }}
+                className="mt-4 px-4 py-2 rounded-lg bg-accent text-primary hover:bg-accent/90 font-semibold transition-colors"
+              >
+                Limpiar filtros
+              </button>
             </div>
-
-            <div className="mt-12 p-8 bg-card/50 rounded-xl border-2 border-accent/30 glassmorphism">
-              <div className="flex gap-4">
-                <AlertCircle className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
-                <div>
-                  <h4 className="font-display font-semibold text-foreground mb-2">Aviso Importante</h4>
-                  <p className="text-foreground/70">
-                    Los datos mostrados son ilustrativos y basados en información histórica. Los rendimientos pasados no garantizan resultados futuros. 
-                    Consulta con un asesor financiero antes de invertir.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </section>
 
