@@ -280,6 +280,7 @@ export default function Comparativa() {
   const [busqueda, setBusqueda] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("yield");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
+  const [filtrosAbiertos, setFiltrosAbiertos] = useState(false);
 
   const handleSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -464,7 +465,24 @@ export default function Comparativa() {
       {/* Sección de Filtros Avanzados */}
       <section className="py-8 glassmorphism border-b border-border sticky top-20 z-40">
         <div className="container">
-          <div className="space-y-6">
+          {/* Botón para abrir/cerrar filtros en móviles */}
+          <div className="md:hidden mb-4">
+            <Button
+              onClick={() => setFiltrosAbiertos(!filtrosAbiertos)}
+              className="w-full bg-accent text-primary hover:bg-accent/90 font-semibold flex items-center justify-between"
+            >
+              <span className="flex items-center gap-2">
+                <Filter className="w-4 h-4" />
+                {filtrosAbiertos ? "Cerrar Filtros" : "Abrir Filtros"}
+              </span>
+              <span className="text-lg">{filtrosAbiertos ? "▼" : "▶"}</span>
+            </Button>
+          </div>
+
+          {/* Contenedor de filtros - visible en desktop, colapsable en móviles */}
+          <div className={`space-y-6 transition-all duration-300 overflow-hidden ${
+            filtrosAbiertos ? "block" : "hidden md:block"
+          }`}>
             {/* Búsqueda */}
             <div className="space-y-3">
               <label className="text-sm font-semibold text-foreground flex items-center gap-2">
@@ -530,7 +548,7 @@ export default function Comparativa() {
             </div>
 
             {/* Info de resultados */}
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-sm">
               <p className="text-foreground/70">
                 Mostrando <span className="font-semibold text-accent">{fibrasFiltradas.length}</span> de <span className="font-semibold text-accent">{fibrasData.length}</span> Fibras
               </p>
