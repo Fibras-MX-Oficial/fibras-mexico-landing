@@ -465,8 +465,8 @@ export default function Comparativa() {
       {/* Sección de Filtros Avanzados */}
       <section className="py-8 glassmorphism border-b border-border sticky top-20 z-40">
         <div className="container">
-          {/* Botón para abrir/cerrar filtros en móviles */}
-          <div className="md:hidden mb-4">
+          {/* Botón para abrir/cerrar filtros */}
+          <div className="mb-4">
             <Button
               onClick={() => setFiltrosAbiertos(!filtrosAbiertos)}
               className="w-full bg-accent text-primary hover:bg-accent/90 font-semibold flex items-center justify-between"
@@ -479,9 +479,9 @@ export default function Comparativa() {
             </Button>
           </div>
 
-          {/* Contenedor de filtros - visible en desktop, colapsable en móviles */}
+          {/* Contenedor de filtros - colapsable en todas las vistas */}
           <div className={`space-y-6 transition-all duration-300 overflow-hidden ${
-            filtrosAbiertos ? "block" : "hidden md:block"
+            filtrosAbiertos ? "block" : "hidden"
           }`}>
             {/* Búsqueda */}
             <div className="space-y-3">
