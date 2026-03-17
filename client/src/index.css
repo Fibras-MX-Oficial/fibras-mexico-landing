@@ -41,66 +41,66 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   
-  /* Custom font families */
-  --font-display: 'Fraunces', serif;
-  --font-body: 'Work Sans', sans-serif;
+  /* Custom font families - Fintech Institutional Pro */
+  --font-display: 'Montserrat', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }
 
-/* Modernismo Mexicano Cálido - Paleta inspirada en atardeceres mexicanos y arquitectura de Luis Barragán */
+/* Fintech Institutional Pro - Paleta de Azul Marino y Cian Eléctrico */
 :root {
-  /* Terracota profunda como color primario */
-  --primary: oklch(0.58 0.14 35);
-  --primary-foreground: oklch(0.98 0.01 75);
+  /* Azul Marino Profundo como color primario */
+  --primary: oklch(0.25 0.08 260);
+  --primary-foreground: oklch(1 0 0);
   
-  /* Amarillo cálido para acentos */
-  --accent: oklch(0.82 0.16 85);
-  --accent-foreground: oklch(0.25 0.05 35);
+  /* Azul Cian Eléctrico para acentos */
+  --accent: oklch(0.65 0.25 200);
+  --accent-foreground: oklch(0.2 0.05 260);
   
-  /* Azul cobalto para elementos de confianza */
-  --secondary: oklch(0.52 0.18 250);
-  --secondary-foreground: oklch(0.98 0.01 250);
+  /* Gris Acero para elementos secundarios */
+  --secondary: oklch(0.35 0.05 260);
+  --secondary-foreground: oklch(1 0 0);
   
-  /* Crema suave como fondo principal */
-  --background: oklch(0.95 0.02 75);
-  --foreground: oklch(0.25 0.05 35);
+  /* Fondo: Azul Marino muy oscuro casi negro */
+  --background: oklch(0.15 0.02 260);
+  --foreground: oklch(0.95 0.01 0);
   
-  /* Tarjetas con fondo blanco cálido */
-  --card: oklch(0.98 0.01 75);
-  --card-foreground: oklch(0.25 0.05 35);
+  /* Tarjetas con Glassmorphism: Azul marino semi-transparente */
+  --card: oklch(0.22 0.04 260);
+  --card-foreground: oklch(0.95 0.01 0);
   
-  --popover: oklch(0.98 0.01 75);
-  --popover-foreground: oklch(0.25 0.05 35);
+  --popover: oklch(0.22 0.04 260);
+  --popover-foreground: oklch(0.95 0.01 0);
   
-  /* Elementos muteados en tonos tierra claros */
-  --muted: oklch(0.88 0.03 75);
-  --muted-foreground: oklch(0.45 0.06 35);
+  /* Elementos muteados en tonos grises acero */
+  --muted: oklch(0.3 0.03 260);
+  --muted-foreground: oklch(0.7 0.02 0);
   
   --destructive: oklch(0.55 0.22 25);
-  --destructive-foreground: oklch(0.98 0.01 75);
+  --destructive-foreground: oklch(1 0 0);
   
-  /* Bordes sutiles en tonos tierra */
-  --border: oklch(0.82 0.04 75);
-  --input: oklch(0.82 0.04 75);
-  --ring: oklch(0.58 0.14 35);
+  /* Bordes sutiles en azul marino */
+  --border: oklch(0.28 0.04 260);
+  --input: oklch(0.28 0.04 260);
+  --ring: oklch(0.65 0.25 200);
   
-  /* Gráficas con paleta cálida */
-  --chart-1: oklch(0.58 0.14 35);
-  --chart-2: oklch(0.82 0.16 85);
-  --chart-3: oklch(0.52 0.18 250);
-  --chart-4: oklch(0.68 0.12 45);
-  --chart-5: oklch(0.72 0.14 65);
+  /* Gráficas con gradientes azul a cian */
+  --chart-1: oklch(0.25 0.08 260);
+  --chart-2: oklch(0.45 0.15 260);
+  --chart-3: oklch(0.65 0.25 200);
+  --chart-4: oklch(0.55 0.2 210);
+  --chart-5: oklch(0.75 0.2 190);
   
-  --sidebar: oklch(0.98 0.01 75);
-  --sidebar-foreground: oklch(0.25 0.05 35);
-  --sidebar-primary: oklch(0.58 0.14 35);
-  --sidebar-primary-foreground: oklch(0.98 0.01 75);
-  --sidebar-accent: oklch(0.88 0.03 75);
-  --sidebar-accent-foreground: oklch(0.25 0.05 35);
-  --sidebar-border: oklch(0.82 0.04 75);
-  --sidebar-ring: oklch(0.58 0.14 35);
+  --sidebar: oklch(0.22 0.04 260);
+  --sidebar-foreground: oklch(0.95 0.01 0);
+  --sidebar-primary: oklch(0.65 0.25 200);
+  --sidebar-primary-foreground: oklch(0.2 0.05 260);
+  --sidebar-accent: oklch(0.3 0.03 260);
+  --sidebar-accent-foreground: oklch(0.95 0.01 0);
+  --sidebar-border: oklch(0.28 0.04 260);
+  --sidebar-ring: oklch(0.65 0.25 200);
   
-  /* Radio de bordes más orgánico y suave */
-  --radius: 1rem;
+  /* Radio de bordes moderno: 8-12px */
+  --radius: 0.75rem;
 }
 
 @layer base {
@@ -114,24 +114,27 @@
     line-height: 1.6;
   }
   
-  /* Tipografía display para títulos */
+  /* Tipografía display para títulos - Montserrat geométrica */
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1.2;
+    letter-spacing: -0.02em;
   }
   
   h1 {
     font-size: clamp(2.5rem, 5vw, 4.5rem);
-    font-weight: 700;
+    font-weight: 800;
   }
   
   h2 {
     font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
   }
   
   h3 {
     font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
   }
   
   button:not(:disabled),
@@ -179,35 +182,56 @@
     }
   }
   
-  /* Clase helper para formas orgánicas */
-  .organic-blob {
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  /* Glassmorphism: Fondos semi-transparentes con desenfoque */
+  .glassmorphism {
+    background: rgba(34, 50, 80, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(102, 204, 255, 0.2);
   }
   
-  /* Textura sutil de papel */
-  .paper-texture {
-    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.03' /%3E%3C/svg%3E");
+  /* Gradiente de salud: Azul oscuro a Cian */
+  .gradient-health {
+    background: linear-gradient(90deg, oklch(0.25 0.08 260) 0%, oklch(0.65 0.25 200) 100%);
+  }
+  
+  /* Efecto hover para elementos interactivos */
+  .interactive-hover {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .interactive-hover:hover {
+    box-shadow: 0 0 20px rgba(102, 204, 255, 0.3);
+    border-color: oklch(0.65 0.25 200);
   }
 }
 
-/* Animaciones personalizadas con easing suave */
+/* Animaciones personalizadas con easing profesional */
 @keyframes float {
   0%, 100% {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-8px);
   }
 }
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(102, 204, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(102, 204, 255, 0.4);
   }
 }
 
@@ -217,4 +241,8 @@
 
 .animate-fade-in-up {
   animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
 }

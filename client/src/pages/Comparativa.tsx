@@ -1,8 +1,8 @@
 /**
- * Design Philosophy: Modernismo Mexicano Cálido
- * - Tabla interactiva con datos de Fibras principales
- * - Filtros por sector y rendimiento
- * - Indicadores visuales de salud financiera
+ * Design Philosophy: Fintech Institutional Pro
+ * - Tabla terminal financiera moderna con glassmorphism
+ * - Filtros interactivos con efectos cian eléctrico
+ * - Gradientes azul-cian para indicadores de salud
  */
 
 import { Button } from "@/components/ui/button";
@@ -213,20 +213,22 @@ export default function Comparativa() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-md border-b border-border">
+      <header className="fixed top-0 left-0 right-0 z-50 glassmorphism border-b border-border">
         <nav className="container flex items-center justify-between py-4">
           <div className="flex items-center gap-2">
-            <Building2 className="w-8 h-8 text-primary" />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-accent/60 flex items-center justify-center">
+              <Building2 className="w-5 h-5 text-primary" />
+            </div>
             <span className="text-2xl font-display font-bold text-foreground">Fibras México</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
-            <a href="/" className="text-foreground/80 hover:text-primary transition-colors duration-300">Inicio</a>
-            <a href="/blog" className="text-foreground/80 hover:text-primary transition-colors duration-300">Blog</a>
-            <a href="/comparativa" className="text-foreground/80 hover:text-primary transition-colors duration-300">Comparativa</a>
-            <a href="/noticias" className="text-foreground/80 hover:text-primary transition-colors duration-300">Noticias</a>
+            <a href="/" className="text-foreground/80 hover:text-accent transition-colors duration-300 font-medium">Inicio</a>
+            <a href="/blog" className="text-foreground/80 hover:text-accent transition-colors duration-300 font-medium">Blog</a>
+            <a href="/comparativa" className="text-foreground/80 hover:text-accent transition-colors duration-300 font-medium">Comparativa</a>
+            <a href="/noticias" className="text-foreground/80 hover:text-accent transition-colors duration-300 font-medium">Noticias</a>
           </div>
           <Button 
-            className="bg-primary text-primary-foreground hover:bg-primary/90"
+            className="bg-accent text-primary hover:bg-accent/90 font-semibold"
             asChild
           >
             <a href="https://www.facebook.com/FibrasMexico" target="_blank" rel="noopener noreferrer">
@@ -237,7 +239,9 @@ export default function Comparativa() {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-background via-background to-accent/5">
+      <section className="pt-32 pb-16" style={{
+        background: 'linear-gradient(135deg, oklch(0.15 0.02 260) 0%, oklch(0.18 0.03 250) 100%)'
+      }}>
         <div className="container">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h1 className="text-foreground">Comparativa de Fibras</h1>
@@ -250,7 +254,7 @@ export default function Comparativa() {
       </section>
 
       {/* Sección de Filtros */}
-      <section className="py-8 bg-card border-b border-border sticky top-20 z-40">
+      <section className="py-8 glassmorphism border-b border-border sticky top-20 z-40">
         <div className="container">
           <div className="grid md:grid-cols-3 gap-6">
             {/* Filtro de Sector */}
@@ -264,11 +268,11 @@ export default function Comparativa() {
                   <button
                     key={sector}
                     onClick={() => setFiltroSector(sector)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                      filtroSector === sector
-                        ? "bg-primary text-primary-foreground shadow-md"
-                        : "bg-muted text-foreground/70 hover:bg-muted/80"
-                    }`}
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                    filtroSector === sector
+                      ? "bg-accent text-primary shadow-lg hover:shadow-xl"
+                      : "bg-secondary/30 text-foreground/70 hover:bg-secondary/50 border border-secondary/50"
+                  }`}
                   >
                     {sector}
                   </button>
@@ -291,11 +295,11 @@ export default function Comparativa() {
                   <button
                     key={option.value}
                     onClick={() => setOrdenarPor(option.value as any)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                      ordenarPor === option.value
-                        ? "bg-accent text-accent-foreground shadow-md"
-                        : "bg-muted text-foreground/70 hover:bg-muted/80"
-                    }`}
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                    ordenarPor === option.value
+                      ? "bg-accent text-primary shadow-lg hover:shadow-xl"
+                      : "bg-secondary/30 text-foreground/70 hover:bg-secondary/50 border border-secondary/50"
+                  }`}
                   >
                     {option.label}
                   </button>
@@ -316,7 +320,7 @@ export default function Comparativa() {
       </section>
 
       {/* Tabla Comparativa */}
-      <section className="py-12 bg-background">
+      <section className="py-12 bg-background/50">
         <div className="container">
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -337,7 +341,7 @@ export default function Comparativa() {
                 {fibrasFiltradas.map((fibra) => (
                   <tr 
                     key={fibra.id}
-                    className="border-b border-border hover:bg-muted/50 transition-colors duration-200"
+                    className="border-b border-border/50 hover:bg-accent/5 transition-all duration-300 cursor-pointer"
                   >
                     <td className="py-4 px-4">
                       <div className="space-y-1">
@@ -400,7 +404,7 @@ export default function Comparativa() {
 
           {/* Leyenda de indicadores */}
           <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="bg-card border-none shadow-md">
+            <Card className="bg-card/50 border border-border/50 glassmorphism shadow-lg hover:shadow-xl transition-all duration-300">
               <CardContent className="p-6 space-y-3">
                 <h4 className="font-display font-semibold text-foreground">Yield Anual</h4>
                 <p className="text-sm text-foreground/70">
@@ -412,7 +416,7 @@ export default function Comparativa() {
               </CardContent>
             </Card>
 
-            <Card className="bg-card border-none shadow-md">
+            <Card className="bg-card/50 border border-border/50 glassmorphism shadow-lg hover:shadow-xl transition-all duration-300">
               <CardContent className="p-6 space-y-3">
                 <h4 className="font-display font-semibold text-foreground">Ocupación</h4>
                 <p className="text-sm text-foreground/70">
@@ -424,7 +428,7 @@ export default function Comparativa() {
               </CardContent>
             </Card>
 
-            <Card className="bg-card border-none shadow-md">
+            <Card className="bg-card/50 border border-border/50 glassmorphism shadow-lg hover:shadow-xl transition-all duration-300">
               <CardContent className="p-6 space-y-3">
                 <h4 className="font-display font-semibold text-foreground">Deuda/EBITDA</h4>
                 <p className="text-sm text-foreground/70">
@@ -436,7 +440,7 @@ export default function Comparativa() {
               </CardContent>
             </Card>
 
-            <Card className="bg-card border-none shadow-md">
+            <Card className="bg-card/50 border border-border/50 glassmorphism shadow-lg hover:shadow-xl transition-all duration-300">
               <CardContent className="p-6 space-y-3">
                 <h4 className="font-display font-semibold text-foreground">P/NAV</h4>
                 <p className="text-sm text-foreground/70">
@@ -452,16 +456,18 @@ export default function Comparativa() {
       </section>
 
       {/* Sección de Recomendaciones */}
-      <section className="py-16 bg-gradient-to-br from-primary/5 to-accent/5">
+      <section className="py-16" style={{
+        background: 'linear-gradient(135deg, rgba(102, 204, 255, 0.05) 0%, rgba(37, 99, 235, 0.05) 100%)'
+      }}>
         <div className="container">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-foreground mb-8 text-center">Cómo Usar Esta Comparativa</h2>
             
             <div className="grid md:grid-cols-3 gap-8">
-              <Card className="bg-card border-none shadow-lg">
+              <Card className="bg-card/50 border border-border/50 glassmorphism shadow-lg hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-8 space-y-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <span className="text-xl font-display font-bold text-primary">1</span>
+                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-accent/30 to-accent/10 flex items-center justify-center">
+                    <span className="text-xl font-display font-bold text-accent">1</span>
                   </div>
                   <h3 className="text-lg font-display font-semibold text-foreground">Filtra por Sector</h3>
                   <p className="text-foreground/70">
@@ -470,10 +476,10 @@ export default function Comparativa() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-card border-none shadow-lg">
+              <Card className="bg-card/50 border border-border/50 glassmorphism shadow-lg hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-8 space-y-4">
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
-                    <span className="text-xl font-display font-bold text-accent-foreground">2</span>
+                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-accent/30 to-accent/10 flex items-center justify-center">
+                    <span className="text-xl font-display font-bold text-accent">2</span>
                   </div>
                   <h3 className="text-lg font-display font-semibold text-foreground">Analiza Indicadores</h3>
                   <p className="text-foreground/70">
@@ -482,10 +488,10 @@ export default function Comparativa() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-card border-none shadow-lg">
+              <Card className="bg-card/50 border border-border/50 glassmorphism shadow-lg hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-8 space-y-4">
-                  <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center">
-                    <span className="text-xl font-display font-bold text-secondary-foreground">3</span>
+                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-accent/30 to-accent/10 flex items-center justify-center">
+                    <span className="text-xl font-display font-bold text-accent">3</span>
                   </div>
                   <h3 className="text-lg font-display font-semibold text-foreground">Diversifica</h3>
                   <p className="text-foreground/70">
@@ -495,9 +501,9 @@ export default function Comparativa() {
               </Card>
             </div>
 
-            <div className="mt-12 p-8 bg-card rounded-2xl border-2 border-primary/20">
+            <div className="mt-12 p-8 bg-card/50 rounded-xl border-2 border-accent/30 glassmorphism">
               <div className="flex gap-4">
-                <AlertCircle className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+                <AlertCircle className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
                 <div>
                   <h4 className="font-display font-semibold text-foreground mb-2">Aviso Importante</h4>
                   <p className="text-foreground/70">
@@ -512,12 +518,14 @@ export default function Comparativa() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-card border-t border-border py-12">
+      <footer className="bg-card/50 border-t border-border/50 py-12 glassmorphism">
         <div className="container">
           <div className="grid md:grid-cols-3 gap-8">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <Building2 className="w-6 h-6 text-primary" />
+                <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-accent to-accent/60 flex items-center justify-center">
+                  <Building2 className="w-4 h-4 text-primary" />
+                </div>
                 <span className="text-xl font-display font-bold text-foreground">Fibras México</span>
               </div>
               <p className="text-foreground/70">
@@ -529,17 +537,17 @@ export default function Comparativa() {
               <h4 className="font-display font-semibold text-foreground">Enlaces</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="/" className="text-foreground/70 hover:text-primary transition-colors">
+                  <a href="/" className="text-foreground/70 hover:text-accent transition-colors">
                     Inicio
                   </a>
                 </li>
                 <li>
-                  <a href="/blog" className="text-foreground/70 hover:text-primary transition-colors">
+                  <a href="/blog" className="text-foreground/70 hover:text-accent transition-colors">
                     Blog
                   </a>
                 </li>
                 <li>
-                  <a href="/comparativa" className="text-foreground/70 hover:text-primary transition-colors">
+                  <a href="/comparativa" className="text-foreground/70 hover:text-accent transition-colors">
                     Comparativa
                   </a>
                 </li>
@@ -550,12 +558,12 @@ export default function Comparativa() {
               <h4 className="font-display font-semibold text-foreground">Recursos</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="https://amefibra.com" target="_blank" rel="noopener noreferrer" className="text-foreground/70 hover:text-primary transition-colors">
+                  <a href="https://amefibra.com" target="_blank" rel="noopener noreferrer" className="text-foreground/70 hover:text-accent transition-colors">
                     AMEFIBRA
                   </a>
                 </li>
                 <li>
-                  <a href="https://www.facebook.com/FibrasMexico" target="_blank" rel="noopener noreferrer" className="text-foreground/70 hover:text-primary transition-colors">
+                  <a href="https://www.facebook.com/FibrasMexico" target="_blank" rel="noopener noreferrer" className="text-foreground/70 hover:text-accent transition-colors">
                     Comunidad
                   </a>
                 </li>
