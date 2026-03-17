@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Blog from "./pages/Blog";
 import Comparativa from "./pages/Comparativa";
 import Noticias from "./pages/Noticias";
+import Analisis from "./pages/Analisis";
 
 
 function Router() {
@@ -17,6 +18,7 @@ function Router() {
       <Route path="/blog" component={Blog} />
       <Route path="/comparativa" component={Comparativa} />
       <Route path="/noticias" component={Noticias} />
+      <Route path="/analisis" component={Analisis} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
