@@ -434,6 +434,7 @@ export default function Comparativa() {
             <a href="/comparativa" className="text-foreground/80 hover:text-accent transition-colors duration-300 font-medium">Comparativa</a>
             <a href="/noticias" className="text-foreground/80 hover:text-accent transition-colors duration-300 font-medium">Noticias</a>
             <a href="/analisis" className="text-foreground/80 hover:text-accent transition-colors duration-300 font-medium">Análisis</a>
+            <a href="/academia" className="text-foreground/80 hover:text-accent transition-colors duration-300 font-medium">Academia</a>
           </div>
           <Button 
             className="bg-accent text-primary hover:bg-accent/90 font-semibold"
