@@ -428,7 +428,7 @@ export default function Comparativa() {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-accent/60 flex items-center justify-center">
               <Building2 className="w-5 h-5 text-primary" />
             </div>
-            <span className="text-2xl font-display font-bold text-foreground">Fibras México</span>
+            <span className="text-2xl font-display font-bold text-foreground">Fibras MX</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
             <a href="/" className="text-foreground/80 hover:text-accent transition-colors duration-300 font-medium">Inicio</a>
@@ -770,7 +770,7 @@ export default function Comparativa() {
                 <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-accent to-accent/60 flex items-center justify-center">
                   <Building2 className="w-4 h-4 text-primary" />
                 </div>
-                <span className="text-xl font-display font-bold text-foreground">Fibras México</span>
+                <span className="text-xl font-display font-bold text-foreground">Fibras MX</span>
               </div>
               <p className="text-foreground/70">
                 Información educativa sobre inversiones en Fibras mexicanas autorizadas por AMEFIBRA.
@@ -822,7 +822,7 @@ export default function Comparativa() {
           
           <div className="pt-8 border-t border-border/50 text-center">
             <p className="text-foreground/60 text-sm">
-              © 2026 Fibras México. Datos basados en Fibras autorizadas por AMEFIBRA. Información ilustrativa para propósitos educativos.
+              © 2026 Fibras MX. Datos basados en Fibras autorizadas por AMEFIBRA. Información ilustrativa para propósitos educativos.
             </p>
           </div>
         </div>

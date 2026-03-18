@@ -155,7 +155,7 @@ export default function Comunidad() {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-accent/60 flex items-center justify-center">
               <Building2 className="w-5 h-5 text-primary" />
             </div>
-            <span className="text-2xl font-display font-bold text-foreground">Fibras México</span>
+            <span className="text-2xl font-display font-bold text-foreground">Fibras MX</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
             <a href="/" className="text-foreground/80 hover:text-accent transition-colors duration-300 font-medium">Inicio</a>
@@ -370,7 +370,7 @@ export default function Comunidad() {
               ¿Listo para Unirte a la Comunidad?
             </h2>
             <p className="text-lg text-foreground/70 mb-8 max-w-2xl mx-auto">
-              Conecta con miles de inversores, comparte tus estrategias y aprende de otros miembros de la comunidad Fibras México.
+              Conecta con miles de inversores, comparte tus estrategias y aprende de otros miembros de la comunidad Fibras MX.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button className="bg-accent text-primary hover:bg-accent/90 font-semibold">
@@ -388,7 +388,7 @@ export default function Comunidad() {
           <div className="container">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
               <div>
-                <h4 className="font-bold text-foreground mb-4">Fibras México</h4>
+                <h4 className="font-bold text-foreground mb-4">Fibras MX</h4>
                 <p className="text-sm text-foreground/60">Plataforma educativa y de análisis para inversión en Fibras.</p>
               </div>
               <div>
@@ -418,7 +418,7 @@ export default function Comunidad() {
               </div>
             </div>
             <div className="border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between">
-              <p className="text-sm text-foreground/60">© 2026 Fibras México. Todos los derechos reservados.</p>
+              <p className="text-sm text-foreground/60">© 2026 Fibras MX. Todos los derechos reservados.</p>
               <p className="text-xs text-foreground/40 mt-4 md:mt-0">
                 Descargo: Esta plataforma es educativa. No es asesoramiento financiero. Consulta a un asesor profesional antes de invertir.
               </p>

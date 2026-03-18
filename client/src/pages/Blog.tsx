@@ -557,7 +557,7 @@ export default function Blog() {
         <nav className="container flex items-center justify-between py-4">
           <div className="flex items-center gap-2">
             <Building2 className="w-8 h-8 text-primary" />
-            <span className="text-2xl font-display font-bold text-foreground">Fibras México</span>
+            <span className="text-2xl font-display font-bold text-foreground">Fibras MX</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
             <a href="/" className="text-foreground/80 hover:text-primary transition-colors duration-300">Inicio</a>
@@ -789,7 +789,7 @@ export default function Blog() {
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <Building2 className="w-6 h-6 text-primary" />
-                <span className="text-xl font-display font-bold text-foreground">Fibras México</span>
+                <span className="text-xl font-display font-bold text-foreground">Fibras MX</span>
               </div>
               <p className="text-foreground/70">
                 Centro educativo sobre inversiones en Fibras mexicanas.
@@ -822,7 +822,7 @@ export default function Blog() {
           
           <div className="mt-12 pt-8 border-t border-border text-center">
             <p className="text-foreground/60">
-              © 2026 Fibras México. Información basada en datos de AMEFIBRA.
+              © 2026 Fibras MX. Información basada en datos de AMEFIBRA.
             </p>
           </div>
         </div>
