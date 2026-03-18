@@ -10,6 +10,7 @@ import Comparativa from "./pages/Comparativa";
 import Noticias from "./pages/Noticias";
 import Analisis from "./pages/Analisis";
 import Academia from "./pages/Academia";
+import Comunidad from "./pages/Comunidad";
 
 
 function Router() {
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/noticias" component={Noticias} />
       <Route path="/analisis" component={Analisis} />
       <Route path="/academia" component={Academia} />
+      <Route path="/comunidad" component={Comunidad} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

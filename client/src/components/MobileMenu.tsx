@@ -23,7 +23,8 @@ const menuItems: MenuItem[] = [
   { label: "Noticias", href: "/noticias" },
   { label: "Análisis", href: "/analisis" },
   { label: "Academia", href: "/academia" },
-  { label: "Comunidad", href: "https://www.facebook.com/FibrasMexico?locale=es_LA" },
+  { label: "Comunidad", href: "/comunidad" },
+  { label: "Facebook", href: "https://www.facebook.com/FibrasMexico?locale=es_LA" },
 ];
 
 export default function MobileMenu() {
