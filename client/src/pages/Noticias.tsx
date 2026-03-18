@@ -6,6 +6,7 @@
  */
 
 import { Button } from "@/components/ui/button";
+import MobileMenu from "@/components/MobileMenu";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Building2,
@@ -252,6 +253,7 @@ export default function Noticias() {
             </Button>
           </nav>
         </header>
+      <MobileMenu />
 
         {/* Artículo Completo */}
         <section className="pt-32 pb-16">

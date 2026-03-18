@@ -5,6 +5,7 @@
  */
 
 import { Button } from "@/components/ui/button";
+import MobileMenu from "@/components/MobileMenu";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   ArrowRight,
@@ -574,6 +575,7 @@ export default function Blog() {
           </Button>
         </nav>
       </header>
+      <MobileMenu />
 
       {/* Hero Section del Blog */}
       <section className="pt-32 pb-16 bg-gradient-to-br from-background via-background to-accent/5">

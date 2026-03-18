@@ -7,6 +7,7 @@
  */
 
 import { Button } from "@/components/ui/button";
+import MobileMenu from "@/components/MobileMenu";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   Building2, 
@@ -62,6 +63,7 @@ export default function Home() {
           </Button>
         </nav>
       </header>
+      <MobileMenu />
 
       {/* Hero Section - Terminal Financiera Moderna */}
       <section 
